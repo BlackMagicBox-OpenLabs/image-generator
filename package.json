@@ -1,0 +1,32 @@
+{
+  "name": "image-generator",
+  "version": "1.0.0",
+  "description": "A client prompt to generate images requesting from Stability API",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BlackMagicBox-OpenLabs/image-generator.git"
+  },
+  "keywords": [
+    "AI",
+    "Image",
+    "generation",
+    "Stable",
+    "Diffusion"
+  ],
+  "author": "Rafael Santos",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BlackMagicBox-OpenLabs/image-generator/issues"
+  },
+  "homepage": "https://github.com/BlackMagicBox-OpenLabs/image-generator#readme",
+  "dependencies": {
+    "axios": "^1.8.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2"
+  }
+}
