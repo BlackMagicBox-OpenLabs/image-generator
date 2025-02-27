@@ -1,6 +1,9 @@
 # Ignore env files
 .env
 
+# Claude Code
+CLAUDE.MD
+
 # Jetbrains
 .idea
 
