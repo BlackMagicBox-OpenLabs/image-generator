@@ -276,7 +276,7 @@
 
     <script>
         // Configuration
-        const API_ENDPOINT = 'https://api.stability.ai/v1/generation';
+        const API_ENDPOINT = '/api/generate-image';
         
         // DOM elements
         const promptInput = document.getElementById('prompt-input');
@@ -289,15 +289,8 @@
         const errorElement = document.getElementById('error');
         const historyContainer = document.getElementById('history-container');
         
-        // API Key Management
-        let apiKey = localStorage.getItem('stability_api_key');
-        
-        if (!apiKey) {
-            apiKey = prompt('Enter your Stability AI API Key (it will be saved in your browser):');
-            if (apiKey) {
-                localStorage.setItem('stability_api_key', apiKey);
-            }
-        }
+        // API Key no longer needed in frontend as we're using the backend
+        // The backend will use the API key from .env file
 
         // Event Listeners
         generateBtn.addEventListener('click', generateImage);
@@ -312,16 +305,6 @@
             if (!prompt) {
                 showError('Please enter a prompt');
                 return;
-            }
-            
-            if (!apiKey) {
-                apiKey = prompt('Enter your Stability AI API Key:');
-                if (apiKey) {
-                    localStorage.setItem('stability_api_key', apiKey);
-                } else {
-                    showError('API key is required');
-                    return;
-                }
             }
             
             const engine = engineSelect.value;
@@ -345,27 +328,17 @@
             hideError();
             
             try {
-                // Mock API response for demonstration
-                // In a real app, uncomment the fetch code below
-                await mockApiCall();
-                
-                /* 
-                // Actual API call code (commented out for demo purposes)
-                const response = await fetch(`${API_ENDPOINT}/${engine}/text-to-image`, {
+                // Real API call to our backend
+                const response = await fetch(API_ENDPOINT, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                        'Authorization': `Bearer ${apiKey}`
+                        'Accept': 'application/json'
                     },
                     body: JSON.stringify({
-                        text_prompts: [
-                            {
-                                text: prompt,
-                                weight: 1
-                            }
-                        ],
-                        cfg_scale: cfgScale,
+                        prompt: prompt,
+                        engine: engine,
+                        cfgScale: cfgScale,
                         steps: steps,
                         width: 1024,
                         height: 1024,
@@ -375,19 +348,19 @@
                 
                 if (!response.ok) {
                     const errorData = await response.json();
-                    throw new Error(errorData.message || 'Error generating image');
+                    throw new Error(errorData.message || errorData.error || 'Error generating image');
                 }
                 
                 const data = await response.json();
-                */
                 
-                // Display the image
-                // In the actual implementation, you would use data from the API response
-                const imageSrc = '/api/placeholder/512/512'; // Placeholder for demo
-                displayImage(imageSrc);
-                
-                // Add to history
-                addToHistory(prompt, imageSrc);
+                // Display the image from our backend response
+                if (data.images && data.images.length > 0) {
+                    const imageSrc = data.images[0].url;
+                    displayImage(imageSrc);
+                    
+                    // Add to history
+                    addToHistory(prompt, imageSrc);
+                }
                 
             } catch (error) {
                 showError(error.message || 'Failed to generate image');
@@ -467,12 +440,7 @@
             errorElement.style.display = 'none';
         }
         
-        // Mock API delay for demonstration
-        async function mockApiCall() {
-            return new Promise(resolve => {
-                setTimeout(resolve, 2000);
-            });
-        }
+        // No longer needed as we're using the real API
     </script>
 </body>
 </html>
