@@ -1,6 +1,9 @@
 # Ignore env files
 .env
 
+# Jetbrains
+.idea
+
 # Logs
 logs
 *.log
